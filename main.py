@@ -1,5 +1,6 @@
 import asyncio
 import pygame
+from grid_system import GridSystem
 
 
 async def main():
@@ -9,6 +10,9 @@ async def main():
         pygame.DOUBLEBUF | pygame.HWSURFACE
     )
 
+    # Create grid INSIDE main(), AFTER pygame.init()
+    grid = GridSystem(hex_radius=35.0)
+    
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 24)
 
@@ -21,7 +25,11 @@ async def main():
         dt = clock.tick(60) / 1000.0
         print(dt)
 
-        screen.fill((0, 255, 0))
+        # BLACK background, not green
+        screen.fill((0, 0, 0))
+        
+        # Render grid BEFORE FPS counter
+        grid.render(screen)
 
         fps_text = font.render(f"FPS: {clock.get_fps():.2f}", True, (255, 255, 255))
         screen.blit(fps_text, (10, 10))
